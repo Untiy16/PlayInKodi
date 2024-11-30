@@ -23,21 +23,23 @@
                 android:textSize="14sp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/settings_icon"
+                android:layout_toStartOf="@id/menu_main_icon"
                 android:background="@null"
                 android:id="@+id/url_input"
                 android:inputType="textUri"
                 android:imeOptions="actionGo"
                 android:singleLine="true"/>
-        
+
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/baseline_settings_24"
-                android:id="@+id/settings_icon"
+                android:src="@drawable/baseline_more_vert_24"
+                android:id="@+id/menu_main_icon"
                 android:layout_centerVertical="true"
-                />
+        />
+
+
     </RelativeLayout>
 
     <View

@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -28,15 +30,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
+import androidx.appcompat.widget.PopupMenu;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText urlInput;
     WebView webView;
     ProgressBar progressBar;
-    ImageView settings;
     View playKodiBtn;
 
     String playlist, subtitles, kodiApiUrl;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     MediaType JSON = MediaType.get("application/json");
     OkHttpClient client = new OkHttpClient();
     JSONObject jsonParams;
+
 
 
     @Override
@@ -58,10 +62,31 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        findViewById(R.id.menu_main_icon).setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(this, v);
+            popup.setForceShowIcon(true);
+            popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
+            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.bookmarks) {
+                        getKodiJson("1", "22");
+                        return true;
+                    } else if (id == R.id.settings) {
+                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            popup.show();
+        });
+
         urlInput = findViewById(R.id.url_input);
         webView = findViewById(R.id.web_view);
         progressBar = findViewById(R.id.progress_bar);
-        settings = findViewById(R.id.settings_icon);
         playKodiBtn = findViewById(R.id.play_kodi_btn);
 
         WebSettings webSettings = webView.getSettings();
@@ -91,14 +116,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
-            }
-        });
-
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
             }
         });
 
