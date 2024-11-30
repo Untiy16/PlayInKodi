@@ -118,40 +118,18 @@ public class MainActivity extends AppCompatActivity {
                 String requestUrl = "http://" + kodiApiUrl + "/jsonrpc";
 
                 if (!playlist.isEmpty()) {
+                    jsonParams = getKodiJson("Player.Open", playlist);
                     try {
-                        jsonParams = new JSONObject();
-                        jsonParams.put("jsonrpc", "2.0");
-                        jsonParams.put("id", "1");
-                        jsonParams.put("method", "Player.Open");
-                        jsonParams.put("params", new JSONObject().put("item", new JSONObject().put("file", playlist)));
-                    } catch (JSONException e) {
-                        Toast.makeText(MainActivity.this, "Playlist JSON creation error!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    try {
+                        Log.d("kodilog", requestUrl);
                         post(requestUrl, jsonParams.toString());
                     } catch (Throwable e) {
                         Toast.makeText(MainActivity.this, "Playlist request error!", Toast.LENGTH_SHORT).show();
-//                        Log.d("kodilog", requestUrl);
-//                        Log.d("kodilog", jsonParams.toString());
-//                        Log.e("kodilog", e.getMessage(), e);
                         return;
                     }
                 }
 
                 if (!subtitles.isEmpty()) {
-                    try {
-                        jsonParams = new JSONObject();
-                        jsonParams.put("jsonrpc", "2.0");
-                        jsonParams.put("id", "1");
-                        jsonParams.put("method", "Player.AddSubtitle");
-                        jsonParams.put("params", new JSONObject().put("playerid", 1).put("subtitle", subtitles));
-                    } catch (JSONException e) {
-                        Toast.makeText(MainActivity.this, "Subtitles JSON creation error!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
+                    jsonParams = getKodiJson("Player.AddSubtitle", subtitles);
                     try {
                         Handler handler = new Handler();
                         handler.postDelayed(() -> {
@@ -174,6 +152,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    JSONObject getKodiJson(String method, String param) {
+        try {
+            jsonParams = new JSONObject();
+            jsonParams.put("jsonrpc", "2.0");
+            jsonParams.put("id", "1");
+            jsonParams.put("method", method);
+            if (method.equals("Player.AddSubtitle")) {
+                jsonParams.put("params", new JSONObject().put("playerid", 1).put("subtitle", param));
+            } else if (method.equals("Player.Open")) {
+                jsonParams.put("params", new JSONObject().put("item", new JSONObject().put("file", param)));
+            }
+            return jsonParams;
+        } catch (JSONException e) {
+            Toast.makeText(MainActivity.this, "Json init fail", Toast.LENGTH_SHORT).show();
+            throw new RuntimeException(e);
+        }
     }
 
     void loadMyUrl(String url) {
