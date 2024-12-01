@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.*;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -58,12 +59,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-
-//        try {
-//        } catch (Exception e) {
-//            Log.e("kodilog", e.toString());
-//        }
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         //init controls
         urlInput = findViewById(R.id.url_input);
