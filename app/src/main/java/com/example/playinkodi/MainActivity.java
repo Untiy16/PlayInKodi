@@ -1,10 +1,14 @@
 package com.example.playinkodi;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -31,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
     public ProgressBar progressBar;
     public View playKodiBtn;
     public View menuMainIcon;
-
     String playlist, subtitles, kodiApiUrl;
     SharedPreferences sharedPreferences;
     KodiApiHelper kodiApiHelper = new KodiApiHelper(MainActivity.this);
 
-    MyDatabaseHelper dbHelper;
+    MyDatabaseHelper dbHelper = new MyDatabaseHelper(MainActivity.this);
+    SQLiteDatabase db;
+
 
     //log and toast examples
     //Toast.makeText(MainActivity.this, kodiApiUrl, Toast.LENGTH_SHORT).show();
@@ -52,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+//        try {
+//        } catch (Exception e) {
+//            Log.e("kodilog", e.toString());
+//        }
+
 
         //init controls
         urlInput = findViewById(R.id.url_input);
@@ -117,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
                     if (id == R.id.bookmarks) {
+                        Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
+                        startActivity(intent);
+                        return true;
+                    } else if (id == R.id.add_bookmark) {
+                        dbHelper.addBookmark(urlInput.getText().toString());
                         return true;
                     } else if (id == R.id.settings) {
                         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -129,8 +146,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //code
-        loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode"); //"https://google.com"
-
+        //Check if we have a URL to load
+        if (getIntent().hasExtra("url")) {
+            String url = getIntent().getStringExtra("url");
+            loadMyUrl(url);
+        } else {
+            loadMyUrl("https://google.com");
+            //loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode"); //"https://google.com"
+        }
     }
 
     @Override
