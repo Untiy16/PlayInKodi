@@ -1,15 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PlayInKodi" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.PlayInKodi" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:fitsSystemWindows">false</item>
-        <item name="android:statusBarColor">#12b2e6</item>
-<!--        <item name="colorPrimary">@color/actionBarColor</item> &lt;!&ndash; Main color of the ActionBar &ndash;&gt;-->
-<!--        <item name="colorPrimaryDark">@color/actionBarColorDark</item> &lt;!&ndash; Darker shade for status bar &ndash;&gt;-->
-<!--        <item name="colorAccent">@color/accentColor</item> &lt;!&ndash; Accent color for widgets &ndash;&gt;-->
+        <item name="android:statusBarColor">@color/kodiMain</item>
+        <item name="colorPrimary">@color/kodiMain</item> <!-- Main color of the ActionBar -->
+        <!--        <item name="colorPrimaryDark">@color/actionBarColorDark</item> &lt;!&ndash; Darker shade for status bar &ndash;&gt;-->
+        <!--        <item name="colorAccent">@color/accentColor</item> &lt;!&ndash; Accent color for widgets &ndash;&gt;-->
     </style>
 
     <style name="Theme.PlayInKodi" parent="Base.Theme.PlayInKodi"/>

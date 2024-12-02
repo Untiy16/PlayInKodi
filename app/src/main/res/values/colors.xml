@@ -2,7 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="actionBarColor">#FF5733</color> <!-- Example ActionBar Color -->
-    <color name="actionBarColorDark">#C13519</color> <!-- Darker ActionBar color for status bar -->
-    <color name="accentColor">#00FF00</color> <!-- Accent color -->
+    <color name="kodiMain">#12B2E6</color> <!-- Example ActionBar Color -->
+    <color name="kodiMainDarker">#1096c2</color> <!-- Example ActionBar Color -->
 </resources>
