@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">-->
+<!--    <EditTextPreference-->
+<!--        android:key="pref_apiUrl"-->
+<!--        android:title="@string/pref_apiUrl"-->
+<!--        android:summary="@string/pref_apiUrl_summary"-->
+<!--        android:defaultValue=""/>-->
+<!--</PreferenceScreen>-->
+
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:key="pref_apiUrl"
+        app:title="@string/pref_apiUrl"
+        app:summary="@string/pref_apiUrl_summary"
+        app:icon="@drawable/baseline_http_24"
+        app:defaultValue=""/>
+
+</PreferenceScreen>

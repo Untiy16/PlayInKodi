@@ -15,4 +15,8 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="pref_apiUrl">Kodi API URL</string>
+    <string name="pref_apiUrl_summary">URL of Kodi API control server</string>
+
 </resources>

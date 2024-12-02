@@ -8,5 +8,5 @@
           android:title="Add bookmark"/>
     <item android:id="@+id/settings"
           android:icon="@drawable/baseline_settings_24"
-          android:title="Settings" />
+          android:title="Preferences" />
 </menu>

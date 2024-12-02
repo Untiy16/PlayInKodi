@@ -23,11 +23,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.PreferenceManager;
 import com.example.playinkodi.api.KodiApiHelper;
 import com.example.playinkodi.database.MyDatabaseHelper;
 
 import androidx.appcompat.widget.PopupMenu;
 import com.example.playinkodi.webview.MainActivityWebViewClient;
+
+import java.lang.reflect.Array;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
         playKodiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPreferences = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
-                kodiApiUrl = sharedPreferences.getString(SettingsActivity.KODI_API_URL, "");
-                if (kodiApiUrl.isEmpty()) {
+                Map<String, ?> preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getAll();
+                kodiApiUrl = String.valueOf(preferences.get("pref_apiUrl"));
+                if (kodiApiUrl == "null" || kodiApiUrl.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Kodi api url is empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         dbHelper.addBookmark(urlInput.getText().toString());
                         return true;
                     } else if (id == R.id.settings) {
-                        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), PreferencesActivity.class);
                         startActivity(intent);
                         return true;
                     }
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             loadMyUrl(url);
         } else {
             loadMyUrl("https://google.com");
-            //loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode"); //"https://google.com"
+//            loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode"); //"https://google.com"
         }
     }
 

@@ -73,7 +73,9 @@
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            app:backgroundTint="@color/kodiMain"
             android:src="@drawable/baseline_play_arrow_24"
+            android:contentDescription="Play button"
     />
 
 </RelativeLayout>
