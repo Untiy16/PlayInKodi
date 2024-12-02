@@ -4,20 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:minHeight="75dp"
+    android:padding="8dp"
+>
 
     <TextView
         android:id="@+id/item_name"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:gravity="fill_vertical"
         android:text="Item Name"
         android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/delete_icon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:src="@android:drawable/ic_delete"
-        android:contentDescription="Delete" />
+        android:tint="@color/black"
+        android:contentDescription="Delete"/>
+
 </LinearLayout>

@@ -12,6 +12,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.playinkodi.bookmarks.Bookmark;
@@ -53,6 +54,10 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarkAdap
 
         adapter = new BookmarkAdapter(this, bokkmarkList, this);
         recyclerView.setAdapter(adapter);
+
+         // Add the divider
+        DividerItemDecoration divider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(divider);
 
         // Initialize the SharedViewModel
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
