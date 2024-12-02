@@ -5,12 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +22,7 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarkAdap
 
     private RecyclerView recyclerView;
     private BookmarkAdapter adapter;
-    private List<Bookmark> bokkmarkList;
+    private List<Bookmark> bookmarkList;
     private MyDatabaseHelper dbHelper;
 
     private SharedViewModel sharedViewModel;
@@ -50,9 +46,9 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarkAdap
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         dbHelper = new MyDatabaseHelper(this);
-        bokkmarkList = loadDataFromDatabase();
+        bookmarkList = loadDataFromDatabase();
 
-        adapter = new BookmarkAdapter(this, bokkmarkList, this);
+        adapter = new BookmarkAdapter(this, bookmarkList, this);
         recyclerView.setAdapter(adapter);
 
          // Add the divider
@@ -65,15 +61,15 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarkAdap
 
     @Override
     public void onDelete(int position) {
-        Bookmark item = bokkmarkList.get(position);
-        deleteItemFromDatabase(item.getId());
-        bokkmarkList.remove(position);
+        Bookmark item = bookmarkList.get(position);
+        dbHelper.deleteBookmark(item.getId());
+        bookmarkList.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
     @Override
     public void onClick(int position) {
-        Bookmark item = bokkmarkList.get(position);
+        Bookmark item = bookmarkList.get(position);
         Intent intent = new Intent(BookmarksActivity.this, MainActivity.class);
         intent.putExtra("url", item.getUrl());
         startActivity(intent); // Open MainActivity with the URL
@@ -93,11 +89,5 @@ public class BookmarksActivity extends AppCompatActivity implements BookmarkAdap
             cursor.close();
         }
         return items;
-    }
-
-
-    private void deleteItemFromDatabase(int id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM Bookmarks WHERE id = " + id);
     }
 }

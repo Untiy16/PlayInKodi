@@ -6,6 +6,10 @@
     <item android:id="@+id/add_bookmark"
           android:icon="@drawable/baseline_bookmark_add_24"
           android:title="Add bookmark"/>
+    <item android:id="@+id/remove_bookmark"
+          android:icon="@drawable/baseline_bookmark_remove_24"
+          android:visible="false"
+          android:title="Remove bookmark"/>
     <item android:id="@+id/settings"
           android:icon="@drawable/baseline_settings_24"
           android:title="Preferences" />

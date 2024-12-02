@@ -2,6 +2,7 @@ package com.example.playinkodi.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -43,5 +44,30 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         values.put("url", url);
         db.insert("Bookmarks", null, values);
         db.close();
+    }
+
+    public boolean isBookmarkExist(String url) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = "url = ?";
+        String[] selectionArgs = { url };
+
+        Cursor cursor = db.query(
+            "Bookmarks",      // Table name
+            new String[]{"url"},   // Columns to return
+            selection,             // WHERE clause
+            selectionArgs,         // WHERE clause arguments
+            null,                  // GROUP BY
+            null,                  // HAVING
+            null                   // ORDER BY
+        );
+
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+    public void deleteBookmark(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM Bookmarks WHERE id = " + id);
     }
 }

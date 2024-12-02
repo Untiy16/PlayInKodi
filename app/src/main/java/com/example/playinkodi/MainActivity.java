@@ -40,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
     public ProgressBar progressBar;
     public View playKodiBtn;
     public View menuMainIcon;
+
+    public PopupMenu popup;
     String playlist, subtitles, kodiApiUrl;
     SharedPreferences sharedPreferences;
     KodiApiHelper kodiApiHelper = new KodiApiHelper(MainActivity.this);
 
-    MyDatabaseHelper dbHelper = new MyDatabaseHelper(MainActivity.this);
+    public MyDatabaseHelper dbHelper = new MyDatabaseHelper(MainActivity.this);
     SQLiteDatabase db;
 
 
@@ -119,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        popup = new PopupMenu(this, menuMainIcon);
+        popup.setForceShowIcon(true);
+        popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
         //menu main listener
         menuMainIcon.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(this, v);
-            popup.setForceShowIcon(true);
-            popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
             popup.show();
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     } else if (id == R.id.add_bookmark) {
+                        dbHelper.addBookmark(urlInput.getText().toString());
+                        return true;
+                    } else if (id == R.id.remove_bookmark) {
                         dbHelper.addBookmark(urlInput.getText().toString());
                         return true;
                     } else if (id == R.id.settings) {
@@ -168,11 +173,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMyUrl(String url) {
         boolean matchUrl = Patterns.WEB_URL.matcher(url).matches();
+        String preparedUrl = "";
         if (matchUrl) {
-            webView.loadUrl(url);
+            preparedUrl = url;
         } else {
-            webView.loadUrl("https://google.com/search?q=" + url);
+            preparedUrl = "https://google.com/search?q=" + url;
         }
+        webView.loadUrl(preparedUrl);
     }
     public String getPlaylist() { return playlist; }
     public void setPlaylist(String playlist) { this.playlist = playlist; }

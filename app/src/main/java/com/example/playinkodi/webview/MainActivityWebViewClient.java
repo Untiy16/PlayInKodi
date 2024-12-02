@@ -5,6 +5,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.example.playinkodi.MainActivity;
+import com.example.playinkodi.R;
 
 public class MainActivityWebViewClient extends WebViewClient {
     MainActivity context;
@@ -29,6 +30,15 @@ public class MainActivityWebViewClient extends WebViewClient {
         if (!this.context.getPlaylist().isEmpty()) {
             context.playKodiBtn.setVisibility(View.VISIBLE);
         }
+
+        if (context.dbHelper.isBookmarkExist(context.webView.getUrl())) {
+            context.popup.getMenu().findItem(R.id.add_bookmark).setVisible(false);
+            context.popup.getMenu().findItem(R.id.remove_bookmark).setVisible(true);
+        } else {
+            context.popup.getMenu().findItem(R.id.add_bookmark).setVisible(true);
+            context.popup.getMenu().findItem(R.id.remove_bookmark).setVisible(false);
+        }
+
     }
 
     @Override
