@@ -1,5 +1,6 @@
 package com.example.playinkodi.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -46,6 +47,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateBookmark(int id, String url) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("url", url);
+        String whereClause = "id = ?";
+        String[] whereArgs = new String[]{String.valueOf(id)};
+        db.update("Bookmarks", values, whereClause, whereArgs);
+        db.close();
+    }
+
     public boolean isBookmarkExist(String url) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = "url = ?";
@@ -64,6 +76,31 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
+    }
+
+    @SuppressLint("Range")
+    public int getUpdatableBookmark(String url) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = "url LIKE ?";
+        String[] selectionArgs = { "%" + url + "%" };
+
+        Cursor cursor = db.query(
+            "Bookmarks",      // Table name
+            new String[]{"id", "url"},   // Columns to return
+            selection,             // WHERE clause
+            selectionArgs,         // WHERE clause arguments
+            null,                  // GROUP BY
+            null,                  // HAVING
+            null                   // ORDER BY
+        );
+
+        if (cursor.getCount() == 1) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(cursor.getColumnIndex("id")); // Replace "name" with your column name
+            }
+        }
+
+        return 0;
     }
 
     public void deleteBookmark(int id) {

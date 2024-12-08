@@ -1,6 +1,9 @@
 package com.example.playinkodi.webview;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -31,15 +34,28 @@ public class MainActivityWebViewClient extends WebViewClient {
             context.playKodiBtn.setVisibility(View.VISIBLE);
         }
 
+        MenuItem updateBookmark = context.popup.getMenu().findItem(R.id.update_bookmark);
+        updateBookmark.setVisible(false);
         if (context.dbHelper.isBookmarkExist(context.webView.getUrl())) {
             context.popup.getMenu().findItem(R.id.add_bookmark).setVisible(false);
             context.popup.getMenu().findItem(R.id.remove_bookmark).setVisible(true);
         } else {
             context.popup.getMenu().findItem(R.id.add_bookmark).setVisible(true);
             context.popup.getMenu().findItem(R.id.remove_bookmark).setVisible(false);
+            int updatableBookmarkId = context.dbHelper.getUpdatableBookmark(Uri.parse(url).getHost());
+            if (updatableBookmarkId != 0) {
+                updateBookmark.setVisible(true);
+                context.setUpdatableBookmarkId(updatableBookmarkId);
+            }
+
         }
 
         context.setLastVisitedUrl(context.webView.getUrl());
+
+
+
+        Log.d("kodilog", Uri.parse(url).getHost());
+        Log.d("kodilog", String.valueOf(context.dbHelper.getUpdatableBookmark(Uri.parse(url).getHost())));
     }
 
     @Override

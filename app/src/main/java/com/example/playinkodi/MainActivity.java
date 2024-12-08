@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     public PopupMenu popup;
     String playlist, subtitles, kodiApiUrl;
+    int updatableBookmarkId = 0;
     SharedPreferences sharedPreferences;
     KodiApiHelper kodiApiHelper = new KodiApiHelper(MainActivity.this);
-    static final String HOME_URL = "https://google.com";
     public MyDatabaseHelper dbHelper = new MyDatabaseHelper(MainActivity.this);
-
+    private static final String HOME_URL = "https://google.com";
     private static final String WEBVIEW_PREFS = "webViewPrefs";
 
 
@@ -147,6 +147,9 @@ public class MainActivity extends AppCompatActivity {
                     } else if (id == R.id.remove_bookmark) {
                         dbHelper.addBookmark(urlInput.getText().toString());
                         return true;
+                    } else if (id == R.id.update_bookmark) {
+                        dbHelper.updateBookmark(updatableBookmarkId, webView.getUrl());
+                        return true;
                     } else if (id == R.id.settings) {
                         Intent intent = new Intent(getApplicationContext(), PreferencesActivity.class);
                         startActivity(intent);
@@ -196,6 +199,9 @@ public class MainActivity extends AppCompatActivity {
     public String getPlaylist() { return playlist; }
     public void setPlaylist(String playlist) { this.playlist = playlist; }
     public void setSubtitles(String subtitles) { this.subtitles = subtitles;}
+    public void setUpdatableBookmarkId(int updatableBookmarkId) {
+        this.updatableBookmarkId = updatableBookmarkId;
+    }
 
     public String getLastVisitedUrl() {
         SharedPreferences readHistory = this.getSharedPreferences(MainActivity.WEBVIEW_PREFS, MODE_PRIVATE);
