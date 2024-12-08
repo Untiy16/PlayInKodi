@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
     String playlist, subtitles, kodiApiUrl;
     SharedPreferences sharedPreferences;
     KodiApiHelper kodiApiHelper = new KodiApiHelper(MainActivity.this);
-
+    static final String HOME_URL = "https://google.com";
     public MyDatabaseHelper dbHelper = new MyDatabaseHelper(MainActivity.this);
-    SQLiteDatabase db;
+
+    private static final String WEBVIEW_PREFS = "webViewPrefs";
 
 
     //log and toast examples
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -131,7 +131,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
-                    if (id == R.id.bookmarks) {
+                    if (id == R.id.refresh) {
+                        refreshPage();
+                        return true;
+                    } else if (id == R.id.home) {
+                        loadMyUrl(HOME_URL);
+                        return true;
+                    }  else if (id == R.id.bookmarks) {
                         Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
                         startActivity(intent);
                         return true;
@@ -151,14 +157,16 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
-        //code
+
         //Check if we have a URL to load
         if (getIntent().hasExtra("url")) {
             String url = getIntent().getStringExtra("url");
             loadMyUrl(url);
+        } else if (!getLastVisitedUrl().isEmpty()) {
+            loadMyUrl(getLastVisitedUrl());
         } else {
-            loadMyUrl("https://google.com");
-//            loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode"); //"https://google.com"
+            loadMyUrl(HOME_URL);
+            //loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode");
         }
     }
 
@@ -181,7 +189,23 @@ public class MainActivity extends AppCompatActivity {
         }
         webView.loadUrl(preparedUrl);
     }
+
+    private void refreshPage() {
+        webView.reload();
+    }
     public String getPlaylist() { return playlist; }
     public void setPlaylist(String playlist) { this.playlist = playlist; }
     public void setSubtitles(String subtitles) { this.subtitles = subtitles;}
+
+    public String getLastVisitedUrl() {
+        SharedPreferences readHistory = this.getSharedPreferences(MainActivity.WEBVIEW_PREFS, MODE_PRIVATE);
+        return readHistory.getString("lastVisitedUrl", "");
+    }
+
+    public void setLastVisitedUrl(String url) {
+        SharedPreferences readHistory = this.getSharedPreferences(MainActivity.WEBVIEW_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = readHistory.edit();
+        editor.putString("lastVisitedUrl", url);
+        editor.apply();
+    }
 }

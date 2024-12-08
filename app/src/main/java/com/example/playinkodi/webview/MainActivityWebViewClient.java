@@ -39,6 +39,7 @@ public class MainActivityWebViewClient extends WebViewClient {
             context.popup.getMenu().findItem(R.id.remove_bookmark).setVisible(false);
         }
 
+        context.setLastVisitedUrl(context.webView.getUrl());
     }
 
     @Override
