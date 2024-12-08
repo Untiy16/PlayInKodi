@@ -6,6 +6,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
         tools:context=".MainActivity">
 
     <RelativeLayout
@@ -64,18 +65,30 @@
             android:layout_below="@id/divider_1"
     />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/play_kodi_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:backgroundTint="@color/kodiMain"
-            android:src="@drawable/baseline_play_arrow_24"
-            android:contentDescription="Play button"
-    />
+    <LinearLayout
+        android:id="@+id/play_kodi_btn_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fab_border"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="invisible"
+        android:padding="5dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/play_kodi_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabCustomSize="100dp"
+                app:backgroundTint="@color/kodiMain"
+                android:background="@drawable/fab_border"
+                android:src="@drawable/baseline_play_arrow_24"
+                app:maxImageSize="48dp"
+                android:contentDescription="Play button"
+        />
+    </LinearLayout>
 
 </RelativeLayout>

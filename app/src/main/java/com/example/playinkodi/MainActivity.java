@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public WebView webView;
     public ProgressBar progressBar;
     public View playKodiBtn;
+    public View playKodiBtnWrapper;
     public View menuMainIcon;
 
     public PopupMenu popup;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.web_view);
         progressBar = findViewById(R.id.progress_bar);
         playKodiBtn = findViewById(R.id.play_kodi_btn);
+        playKodiBtnWrapper = findViewById(R.id.play_kodi_btn_wrapper);
         menuMainIcon = findViewById(R.id.menu_main_icon);
 
         //config webView

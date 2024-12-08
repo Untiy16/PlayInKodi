@@ -21,7 +21,7 @@ public class MainActivityWebViewClient extends WebViewClient {
         super.onPageStarted(view, url, favicon);
         context.urlInput.setText(context.webView.getUrl());
         context.progressBar.setVisibility(View.VISIBLE);
-        context.playKodiBtn.setVisibility(View.INVISIBLE);
+        context.playKodiBtnWrapper.setVisibility(View.INVISIBLE);
         context.setPlaylist("");
         context.setSubtitles("");
     }
@@ -31,7 +31,7 @@ public class MainActivityWebViewClient extends WebViewClient {
         super.onPageFinished(view, url);
         context.progressBar.setVisibility(View.INVISIBLE);
         if (!this.context.getPlaylist().isEmpty()) {
-            context.playKodiBtn.setVisibility(View.VISIBLE);
+            context.playKodiBtnWrapper.setVisibility(View.VISIBLE);
         }
 
         MenuItem updateBookmark = context.popup.getMenu().findItem(R.id.update_bookmark);
