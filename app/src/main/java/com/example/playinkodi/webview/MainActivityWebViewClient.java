@@ -1,6 +1,8 @@
 package com.example.playinkodi.webview;
 
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.MenuItem;
@@ -62,6 +64,8 @@ public class MainActivityWebViewClient extends WebViewClient {
     public void onLoadResource(WebView view, String url) {
         if (url.contains(".m3u")) {
             this.context.setPlaylist(url);
+            context.playKodiBtnWrapper.setVisibility(View.VISIBLE);
+            context.playKodiBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2feba6")));
         }
 
         if (url.contains(".vtt") || url.contains(".srt") || url.contains(".ass")) {
