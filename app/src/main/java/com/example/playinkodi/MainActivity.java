@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         playKodiBtnWrapper = findViewById(R.id.play_kodi_btn_wrapper);
         menuMainIcon = findViewById(R.id.menu_main_icon);
 
+        urlInput.setSelectAllOnFocus(true);
+
         //config webView
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
