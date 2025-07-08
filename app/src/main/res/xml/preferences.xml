@@ -17,4 +17,11 @@
         app:icon="@drawable/baseline_http_24"
         app:defaultValue=""/>
 
+    <CheckBoxPreference
+            app:key="pref_parseDirectVideoUrl"
+            app:title="@string/pref_parseDirectVideoUrl"
+            app:summary="@string/pref_parseDirectVideoUrl_summary"
+            app:icon="@drawable/baseline_ondemand_video_24"
+            app:defaultValue="true"/>
+
 </PreferenceScreen>

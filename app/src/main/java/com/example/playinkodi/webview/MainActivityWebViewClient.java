@@ -1,5 +1,6 @@
 package com.example.playinkodi.webview;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -9,8 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import androidx.preference.PreferenceManager;
 import com.example.playinkodi.MainActivity;
 import com.example.playinkodi.R;
+
+import java.util.Map;
 
 public class MainActivityWebViewClient extends WebViewClient {
     MainActivity context;
@@ -62,7 +66,25 @@ public class MainActivityWebViewClient extends WebViewClient {
 
     @Override
     public void onLoadResource(WebView view, String url) {
-        if (url.contains(".m3u")) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean parseDirectVideoUrl = prefs.getBoolean("pref_parseDirectVideoUrl", true);
+
+        if (
+            // .mp4, .mov, .avi, .wmv, .mkv, .webm, and .flv
+            url.contains(".m3u")
+            || (
+                parseDirectVideoUrl
+                && (
+                    url.contains(".mp4")
+                    || url.contains(".mov")
+                    || url.contains(".avi")
+                    || url.contains(".wmv")
+                    || url.contains(".mkv")
+                    || url.contains(".webm")
+                    || url.contains(".flv")
+                )
+            )
+        ) {
             this.context.setPlaylist(url);
             context.playKodiBtnWrapper.setVisibility(View.VISIBLE);
             context.playKodiBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2feba6")));

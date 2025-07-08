@@ -18,5 +18,7 @@
 
     <string name="pref_apiUrl">Kodi API URL</string>
     <string name="pref_apiUrl_summary">URL of Kodi API control server</string>
+    <string name="pref_parseDirectVideoUrl">Allow direct video files</string>
+    <string name="pref_parseDirectVideoUrl_summary">Allow to parse video files, not just m3u playlists</string>
 
 </resources>
