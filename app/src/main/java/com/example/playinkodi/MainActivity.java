@@ -82,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         //config webView
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webView.setWebViewClient(new MainActivityWebViewClient(this));
