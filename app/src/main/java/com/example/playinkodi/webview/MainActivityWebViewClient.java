@@ -14,6 +14,7 @@ import androidx.preference.PreferenceManager;
 import com.example.playinkodi.MainActivity;
 import com.example.playinkodi.R;
 
+import java.net.URI;
 import java.util.Map;
 
 public class MainActivityWebViewClient extends WebViewClient {
@@ -81,19 +82,21 @@ public class MainActivityWebViewClient extends WebViewClient {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean parseDirectVideoUrl = prefs.getBoolean("pref_parseDirectVideoUrl", true);
 
+        String urlExt = getUrlExtension(url);
+
         if (
-            // .mp4, .mov, .avi, .wmv, .mkv, .webm, and .flv
-            url.contains(".m3u")
+            urlExt.equals(".m3u")
+            || urlExt.equals(".m3u8")
             || (
                 parseDirectVideoUrl
                 && (
-                    url.contains(".mp4")
-                    || url.contains(".mov")
-                    || url.contains(".avi")
-                    || url.contains(".wmv")
-                    || url.contains(".mkv")
-                    || url.contains(".webm")
-                    || url.contains(".flv")
+                    urlExt.equals(".mp4")
+                    || urlExt.equals(".mov")
+                    || urlExt.equals(".avi")
+                    || urlExt.equals(".wmv")
+                    || urlExt.equals(".mkv")
+                    || urlExt.equals(".webm")
+                    || urlExt.equals(".flv")
                 )
             )
         ) {
@@ -102,10 +105,24 @@ public class MainActivityWebViewClient extends WebViewClient {
             context.playKodiBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#2feba6")));
         }
 
-        if (url.contains(".vtt") || url.contains(".srt") || url.contains(".ass")) {
+        if (urlExt.equals(".vtt") || urlExt.equals(".srt") || urlExt.equals(".ass")) {
             this.context.setSubtitles(url);
         }
 
         super.onLoadResource(view, url);
+    }
+
+    public static String getUrlExtension(String urlString) {
+        try {
+            URI url = new URI(urlString);
+            String path = url.getPath();
+            int dotIndex = path.lastIndexOf('.');
+            if (dotIndex != -1) {
+                return "." + path.substring(dotIndex + 1).toLowerCase();
+            }
+        } catch (Exception e) {
+            // malformed URL, just return empty
+        }
+        return "";
     }
 }
