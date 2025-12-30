@@ -25,6 +25,7 @@ public class MainActivityWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+        context.setRefreshing(true);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean parseDesktopUserAgentState = prefs.getBoolean("pref_desktopUserAgent", false);
@@ -44,6 +45,8 @@ public class MainActivityWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+        context.setRefreshing(false);
+
         context.progressBar.setVisibility(View.INVISIBLE);
         if (!this.context.getPlaylist().isEmpty()) {
             context.playKodiBtnWrapper.setVisibility(View.VISIBLE);

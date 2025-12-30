@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public View playKodiBtn;
     public View playKodiBtnWrapper;
     public View menuMainIcon;
+    public View refreshButtonIcon;
 
     public PopupMenu popup;
     String playlist, subtitles, kodiApiUrl;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         playKodiBtn = findViewById(R.id.play_kodi_btn);
         playKodiBtnWrapper = findViewById(R.id.play_kodi_btn_wrapper);
         menuMainIcon = findViewById(R.id.menu_main_icon);
+        refreshButtonIcon = findViewById(R.id.refresh_button_icon);
 
         urlInput.setSelectAllOnFocus(true);
 
@@ -136,40 +138,60 @@ public class MainActivity extends AppCompatActivity {
         popup.setForceShowIcon(true);
         popup.getMenuInflater().inflate(R.menu.menu_main, popup.getMenu());
         //menu main listener
-        menuMainIcon.setOnClickListener(v -> {
+        clickWithFeedback(menuMainIcon, () -> {
             popup.show();
-            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    int id = item.getItemId();
-                    if (id == R.id.refresh) {
-                        refreshPage();
-                        return true;
-                    } else if (id == R.id.home) {
-                        loadMyUrl(HOME_URL);
-                        return true;
-                    }  else if (id == R.id.bookmarks) {
-                        Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
-                        startActivity(intent);
-                        return true;
-                    } else if (id == R.id.add_bookmark) {
-                        dbHelper.addBookmark(urlInput.getText().toString());
-                        return true;
-                    } else if (id == R.id.remove_bookmark) {
-                        dbHelper.addBookmark(urlInput.getText().toString());
-                        return true;
-                    } else if (id == R.id.update_bookmark) {
-                        dbHelper.updateBookmark(updatableBookmarkId, webView.getUrl());
-                        return true;
-                    } else if (id == R.id.settings) {
-                        Intent intent = new Intent(getApplicationContext(), PreferencesActivity.class);
-                        startActivity(intent);
-                        return true;
-                    }
-                    return false;
+            popup.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.refresh) {
+                    refreshPage();
+                    return true;
+                } else if (id == R.id.home) {
+                    loadMyUrl(HOME_URL);
+                    return true;
+                }  else if (id == R.id.bookmarks) {
+                    Intent intent = new Intent(getApplicationContext(), BookmarksActivity.class);
+                    startActivity(intent);
+                    return true;
+                } else if (id == R.id.add_bookmark) {
+                    dbHelper.addBookmark(urlInput.getText().toString());
+                    return true;
+                } else if (id == R.id.remove_bookmark) {
+                    dbHelper.addBookmark(urlInput.getText().toString());
+                    return true;
+                } else if (id == R.id.update_bookmark) {
+                    dbHelper.updateBookmark(updatableBookmarkId, webView.getUrl());
+                    return true;
+                } else if (id == R.id.settings) {
+                    Intent intent = new Intent(getApplicationContext(), PreferencesActivity.class);
+                    startActivity(intent);
+                    return true;
                 }
+                return false;
             });
         });
+
+        clickWithFeedback(refreshButtonIcon, this::refreshPage, true);
+//        clickWithFeedback(refreshButtonIcon, () -> webView.reload());
+//        refreshButtonIcon.setOnClickListener(v -> {
+//
+//        });
+//
+//        refreshButtonIcon.setOnClickListener(v -> {
+//            refreshButtonIcon.animate()
+//                .scaleX(0.9f)
+//                .scaleY(0.9f)
+//                .setDuration(80)
+//                .withEndAction(() -> {
+//                    refreshButtonIcon.animate()
+//                        .scaleX(1f)
+//                        .scaleY(1f)
+//                        .setDuration(80)
+//                        .start();
+//
+//                    refreshPage();
+//                })
+//                .start();
+//        });
 
 
         //Check if we have a URL to load
@@ -224,6 +246,11 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl(preparedUrl);
     }
 
+    public void setRefreshing(boolean isLoading) {
+        refreshButtonIcon.setEnabled(!isLoading);
+        refreshButtonIcon.setClickable(!isLoading);
+        refreshButtonIcon.setAlpha(isLoading ? 0.4f : 1f);
+    }
     private void refreshPage() {
         webView.reload();
     }
@@ -244,5 +271,34 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = readHistory.edit();
         editor.putString("lastVisitedUrl", url);
         editor.apply();
+    }
+
+    public static void clickWithFeedback(View view, Runnable action, Boolean disable) {
+        view.setOnClickListener(v -> {
+            view.animate()
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(80)
+                .withEndAction(() -> {
+
+                    view.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .setDuration(80)
+                            .start();
+
+                    if (disable) {
+                        view.setEnabled(false);
+                        view.setAlpha(0.4f);
+                    }
+
+                    action.run();
+                })
+                .start();
+        });
+    }
+
+    public static void clickWithFeedback(View view, Runnable action) {
+        clickWithFeedback(view, action, false);
     }
 }
