@@ -24,4 +24,11 @@
             app:icon="@drawable/baseline_ondemand_video_24"
             app:defaultValue="true"/>
 
+    <CheckBoxPreference
+            app:key="pref_desktopUserAgent"
+            app:title="@string/pref_desktopUserAgent"
+            app:summary="@string/pref_desktopUserAgent_summary"
+            app:icon="@drawable/outline_computer_24"
+            app:defaultValue="false"/>
+
 </PreferenceScreen>

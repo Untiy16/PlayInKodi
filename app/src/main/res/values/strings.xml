@@ -17,8 +17,10 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string name="pref_apiUrl">Kodi API URL</string>
-    <string name="pref_apiUrl_summary">URL of Kodi API control server</string>
+    <string name="pref_apiUrl_summary">URL of Kodi API control server. Accepts multiple values, separated by line breaks. Examples:\n\n192.168.1.99\n192.168.1.99 - bedroom TV</string>
     <string name="pref_parseDirectVideoUrl">Allow direct video files</string>
     <string name="pref_parseDirectVideoUrl_summary">Allow to parse video files, not just m3u playlists</string>
+    <string name="pref_desktopUserAgent">Desktop mode</string>
+    <string name="pref_desktopUserAgent_summary">Use desktop user-agent header</string>
 
 </resources>

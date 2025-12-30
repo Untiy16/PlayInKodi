@@ -25,6 +25,15 @@ public class MainActivityWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean parseDesktopUserAgentState = prefs.getBoolean("pref_desktopUserAgent", false);
+        if (parseDesktopUserAgentState) {
+            view.getSettings().setUserAgentString("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36");
+        } else {
+            view.getSettings().setUserAgentString(null);
+        }
+
         context.urlInput.setText(context.webView.getUrl());
         context.progressBar.setVisibility(View.VISIBLE);
         context.playKodiBtnWrapper.setVisibility(View.INVISIBLE);

@@ -2,6 +2,7 @@ package com.example.playinkodi;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import android.webkit.*;
 import android.widget.*;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -121,10 +123,12 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                String requestUrl = "http://" + kodiApiUrl + "/jsonrpc";
-
-                kodiApiHelper.playlistRequest(requestUrl, playlist);
-                kodiApiHelper.subtitlesRequest(requestUrl, subtitles);
+                String[] kodiApiUrls = kodiApiUrl.split("\\r?\\n");
+                if (kodiApiUrls.length == 1) {
+                    sendRequestToKodi(kodiApiUrls[0]);
+                } else {
+                    selectKodiDevice(MainActivity.this, kodiApiUrls);
+                }
             }
         });
 
@@ -178,6 +182,26 @@ public class MainActivity extends AppCompatActivity {
             loadMyUrl(HOME_URL);
             //loadMyUrl("https://american-horror-story.net/238-subtitles/1-season/2-episode");
         }
+    }
+
+    private void sendRequestToKodi(String ip) {
+        String[] ipParts = ip.split(" ");
+        String requestUrl = "http://" + ipParts[0] + "/jsonrpc";
+
+        kodiApiHelper.playlistRequest(requestUrl, playlist);
+        kodiApiHelper.subtitlesRequest(requestUrl, subtitles);
+    }
+
+    private void selectKodiDevice(Context context, String[] options) {
+
+        new AlertDialog.Builder(context)
+                .setTitle("Choose device")
+                .setItems(options, (dialog, which) -> {
+                    String selected = options[which];
+                    sendRequestToKodi(selected);
+                })
+                .setCancelable(false)
+                .show();
     }
 
     @Override
