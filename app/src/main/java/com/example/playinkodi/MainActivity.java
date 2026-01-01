@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public EditText urlInput;
     public WebView webView;
+    public FrameLayout frameLayout;
     public ProgressBar progressBar;
     public View playKodiBtn;
     public View playKodiBtnWrapper;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         //init controls
         urlInput = findViewById(R.id.url_input);
         webView = findViewById(R.id.web_view);
+        frameLayout = findViewById(R.id.frame_layout);
         progressBar = findViewById(R.id.progress_bar);
         playKodiBtn = findViewById(R.id.play_kodi_btn);
         playKodiBtnWrapper = findViewById(R.id.play_kodi_btn_wrapper);
@@ -91,12 +93,40 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setUseWideViewPort(true);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.setVerticalScrollBarEnabled(false);
+        webView.setHorizontalScrollBarEnabled(false);
+        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         webView.setWebViewClient(new MainActivityWebViewClient(this));
         webView.setWebChromeClient(new WebChromeClient() {
+
+            private View fullscreenView;
+            private CustomViewCallback fullscreenCallback;
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-            super.onProgressChanged(view, newProgress);
-            progressBar.setProgress(newProgress);
+                super.onProgressChanged(view, newProgress);
+                progressBar.setProgress(newProgress);
+            }
+
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                // Enter fullscreen
+                fullscreenView = view;
+                fullscreenCallback = callback;
+
+                frameLayout.addView(view);
+                webView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onHideCustomView() {
+                // Exit fullscreen
+                frameLayout.removeView(fullscreenView);
+                fullscreenView = null;
+
+                fullscreenCallback.onCustomViewHidden();
+                webView.setVisibility(View.VISIBLE);
             }
         });
 

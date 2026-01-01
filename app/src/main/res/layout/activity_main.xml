@@ -69,12 +69,17 @@
             android:layout_below="@id/input_fields"
             android:visibility="invisible"/>
 
-    <WebView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/web_view"
-            android:layout_below="@id/divider_1"
-    />
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/divider_1">
+        <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/web_view"
+        />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/play_kodi_btn_wrapper"
@@ -85,7 +90,7 @@
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="48dp"
         android:visibility="invisible"
         android:padding="5dp">
 
@@ -93,12 +98,14 @@
                 android:id="@+id/play_kodi_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fabCustomSize="100dp"
+                app:fabCustomSize="70dp"
                 app:backgroundTint="@color/kodiMain"
-                android:background="@drawable/fab_border"
                 android:src="@drawable/baseline_play_arrow_24"
-                app:maxImageSize="48dp"
+                app:maxImageSize="32dp"
                 android:contentDescription="Play button"
+                android:stateListAnimator="@null"
+                app:elevation="0dp"
+                app:pressedTranslationZ="0dp"
         />
     </LinearLayout>
 
